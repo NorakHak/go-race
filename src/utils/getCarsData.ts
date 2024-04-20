@@ -1,12 +1,12 @@
+import axios from '../config/axios';
 import { Car } from './CarInterface';
 
 export const getCarsData = async (): Promise<Car[]> => {
-  const response = await fetch('http://127.0.0.1:3000/garage');
-  if (!response.ok) {
+  const response = await axios.get('/garage');
+
+  if (!response) {
     throw new Error('Something goes wrong');
   }
 
-  let data = await response.json();
-
-  return data;
+  return response.data;
 };

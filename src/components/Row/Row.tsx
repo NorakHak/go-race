@@ -5,8 +5,8 @@ import carLogo from '../../imgs/icons/car.svg';
 
 interface rowProps {
   car: Car;
-  selectCar: (id: number) => void;
-  deleteCar: (id: number) => void;
+  selectCar: (id: string) => void;
+  deleteCar: (id: string) => void;
 }
 
 export const Row: React.FC<rowProps> = ({ selectCar, deleteCar, car }) => {

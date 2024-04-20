@@ -1,8 +1,9 @@
 import './Garage.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
+import axios from '../../config/axios';
 import { Row } from '../Row/Row';
 import { getCarsData } from '../../utils/getCarsData';
 import { generateHundredCars } from '../../utils/generateHundredCars';
@@ -42,9 +43,11 @@ export const Garage: React.FC = () => {
     const hundredCars = generateHundredCars();
 
     try {
-      for (let i = 0; i < hundredCars.length; i++) {
-        await sendDataToServer(hundredCars[i]);
-      }
+      hundredCars.forEach(async (car) => {
+        await sendDataToServer(car).then((res) => {
+          return res;
+        });
+      });
     } catch (error) {
       console.log('We got an error, while trying to get data from DB:', error);
     }
@@ -85,7 +88,7 @@ export const Garage: React.FC = () => {
     const createdCar: Car = {
       name,
       color,
-      id: Date.now(),
+      id: uuidv4(),
     };
 
     await sendDataToServer(createdCar);
@@ -114,9 +117,9 @@ export const Garage: React.FC = () => {
     }));
   };
 
-  const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
 
-  const selectCar = (id: number): void => {
+  const selectCar = (id: string): void => {
     const selectedCar = cars.find((car) => {
       return car.id === id;
     });
@@ -126,14 +129,14 @@ export const Garage: React.FC = () => {
     }
   };
 
-  const updateCar = async (id: number | null) => {
+  const updateCar = async (id: string | null) => {
     try {
       const updatedCarData = {
         name: updateParams.name,
         color: updateParams.color,
       };
 
-      const response = await axios.post(`/garage/${id}`, updatedCarData);
+      const response = await axios.put(`/garage/${id}`, updatedCarData);
       console.log(response);
       if (!response) {
         throw new Error('Something goes wrong with car updating');
@@ -153,12 +156,11 @@ export const Garage: React.FC = () => {
 
   //deleting car
 
-  const deleteCar = async (id: number) => {
+  const deleteCar = async (id: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:3000/garage/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
+      const response = await axios.delete(`/garage/${id}`);
+
+      if (!response) {
         throw new Error('Something goes wrong with car deleting');
       }
       console.log('Car deleted');
