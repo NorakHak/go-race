@@ -4,12 +4,12 @@ import arrow from '../../imgs/icons/arrows_right1.png';
 // @ts-ignore
 import logo from '../../imgs/img/logo.png';
 
-interface headerProps {
+interface HeaderProps {
   showWinnersBlock: () => void;
   showGarageBlock: () => void;
 }
 
-export const Header: React.FC<headerProps> = ({
+export const Header: React.FC<HeaderProps> = ({
   showWinnersBlock,
   showGarageBlock,
 }) => {

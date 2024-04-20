@@ -1,6 +1,8 @@
 import './Garage.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from 'axios';
+
 import { Row } from '../Row/Row';
 import { getCarsData } from '../../utils/getCarsData';
 import { generateHundredCars } from '../../utils/generateHundredCars';
@@ -131,14 +133,9 @@ export const Garage: React.FC = () => {
         color: updateParams.color,
       };
 
-      const response = await fetch(`http://127.0.0.1:3000/garage/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedCarData),
-      });
-      if (!response.ok) {
+      const response = await axios.post(`/garage/${id}`, updatedCarData);
+      console.log(response);
+      if (!response) {
         throw new Error('Something goes wrong with car updating');
       }
       console.log('Car updated');

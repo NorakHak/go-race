@@ -12,6 +12,7 @@
     "prettier/prettier": "error",
     "react/no-unescaped-entities": 0,
     "no-console": "warn",
+    "react/prop-types": "off",
     "semi": "warn",
     "quotes": [
       "error",
@@ -23,7 +24,19 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/react-in-jsx-scope": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling", "index"]
+        ],
+        "newlines-between": "always"
+      }
+    ]
   },
-  "plugins": ["react", "prettier", "react-hooks"]
+  "plugins": ["react", "prettier", "react-hooks", "import"]
 }
