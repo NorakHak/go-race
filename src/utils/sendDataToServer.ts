@@ -1,14 +1,13 @@
-import { Car } from "./CarInterface"
+import { Car } from './CarInterface';
 
-export const sendDataToServer = async (data:Car):Promise<void>=>{
-
-    try {
-    const response = await fetch("http://127.0.0.1:3000/garage", {
-      method: "POST",
+export const sendDataToServer = async (data: Car): Promise<void> => {
+  try {
+    const response = await fetch('http://127.0.0.1:3000/garage', {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!response.ok) {
       throw new Error('Something goes wrong');
@@ -17,5 +16,4 @@ export const sendDataToServer = async (data:Car):Promise<void>=>{
   } catch (error) {
     console.error('We have an error, Houston:', error);
   }
-    };
-
+};

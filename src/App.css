@@ -10,7 +10,7 @@ body {
 }
 
 button {
-  font-family: "Press Start 2P", system-ui;
+  font-family: 'Press Start 2P', system-ui;
   font-weight: 100;
   transition: scale 0.1s;
 }
