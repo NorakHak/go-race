@@ -1,0 +1,116 @@
+main {
+  padding: 50px 5px;
+}
+
+.rows_container {
+    position: relative;
+}
+
+.main_btns_container {
+    margin-bottom: 50px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main_btns_container button {
+    padding: 5px;
+    background: transparent;
+    border-radius: 5px;
+}
+
+.race_btns {
+    display: flex;
+    gap: 10px;
+}
+
+.race_btns button:first-of-type, .create_container button {
+    border: 2px solid #61ADB3;
+    color: #5dced6;
+}
+
+.race_btns button:last-of-type, .update_container button {
+    border: 2px solid #B361A0;
+    color: #B361A0;
+}
+
+.create_update_btns{
+    display: flex;
+    gap: 15px;
+}
+
+.create_container, .update_container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.create_container input:first-of-type, .update_container input:first-of-type {
+    height: 100%;
+}
+
+.generate_btn{
+    display:flex;
+}
+
+.generate_btn button {
+    border: 2px solid rgb(35, 183, 35);
+    color: rgb(35, 183, 35);
+}
+
+.start {
+    position: absolute;
+    min-height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 230px;
+    width: 40px;
+    height: 100%;
+    border: 2px solid rgb(183, 56, 56);
+    border-radius: 5px;
+}
+
+.finish {
+    position: absolute;
+    min-height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 95px;
+    width: 40px;
+    height: 100%;
+    border: 2px solid rgb(35, 183, 35);
+    border-radius: 5px;
+}
+
+.start_text, .finish_text {
+    font-family: "Press Start 2P", system-ui;
+    writing-mode: vertical-lr;
+}
+
+.start_text {
+    color: rgb(183, 56, 56);
+}
+
+.finish_text {
+    color: rgb(35, 183, 35);
+}
+
+@media only screen and (max-width:1050px) {
+        .main_btns_container {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .create_update_btns {
+            flex-direction: column;
+            justify-content: start;
+            gap: 23px;
+        }
+
+        .race_btns {
+            gap: 40px;
+        }
+}
+
