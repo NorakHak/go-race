@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import { Car } from './CarInterface';
 
 const getRandomColor = (): string => {
@@ -27,14 +25,14 @@ const getRandomName = (): string => {
   return `${brand} ${model}`;
 };
 
-export const generateHundredCars = (): Car[] => {
+export const generateHundredCars = (lastNumber: number): Car[] => {
   const Cars: Car[] = [];
 
-  for (let i = 5; i <= 100; i++) {
+  for (let i = lastNumber; i <= lastNumber + 100; i++) {
     Cars.push({
       name: getRandomName(),
       color: getRandomColor(),
-      id: uuidv4(),
+      id: i,
     });
   }
 

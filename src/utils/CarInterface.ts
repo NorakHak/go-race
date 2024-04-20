@@ -1,5 +1,5 @@
 export interface Car {
-  id: string;
+  id: number;
   name: string;
   color: string;
 }

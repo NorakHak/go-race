@@ -1,7 +1,6 @@
 import './Garage.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import axios from '../../config/axios';
 import { Row } from '../Row/Row';
@@ -40,7 +39,7 @@ export const Garage: React.FC = () => {
   // genereting 100 cars
 
   const carsGenerating = async () => {
-    const hundredCars = generateHundredCars();
+    const hundredCars = generateHundredCars(cars[cars.length - 1].id + 1);
 
     try {
       hundredCars.forEach(async (car) => {
@@ -82,13 +81,14 @@ export const Garage: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement>,
     name: string,
     color: string,
+    id: number,
   ) => {
     e.preventDefault();
 
     const createdCar: Car = {
       name,
       color,
-      id: uuidv4(),
+      id,
     };
 
     await sendDataToServer(createdCar);
@@ -117,9 +117,9 @@ export const Garage: React.FC = () => {
     }));
   };
 
-  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+  const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
 
-  const selectCar = (id: string): void => {
+  const selectCar = (id: number): void => {
     const selectedCar = cars.find((car) => {
       return car.id === id;
     });
@@ -129,7 +129,7 @@ export const Garage: React.FC = () => {
     }
   };
 
-  const updateCar = async (id: string | null) => {
+  const updateCar = async (id: number | null) => {
     try {
       const updatedCarData = {
         name: updateParams.name,
@@ -156,7 +156,7 @@ export const Garage: React.FC = () => {
 
   //deleting car
 
-  const deleteCar = async (id: string) => {
+  const deleteCar = async (id: number) => {
     try {
       const response = await axios.delete(`/garage/${id}`);
 
@@ -194,7 +194,12 @@ export const Garage: React.FC = () => {
             />
             <button
               onClick={(e) =>
-                createCar(e, createParams.name, createParams.color)
+                createCar(
+                  e,
+                  createParams.name,
+                  createParams.color,
+                  cars[cars.length - 1].id + 1,
+                )
               }
             >
               Create
