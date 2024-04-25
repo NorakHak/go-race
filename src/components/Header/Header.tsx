@@ -2,20 +2,20 @@ import { Link } from 'react-router-dom';
 
 import './Header.css';
 // @ts-ignore
-import arrow from '../../imgs/icons/arrows_right1.png';
+import arrow from '../../pics/icons/arrows_right1.png';
 // @ts-ignore
-import logo from '../../imgs/img/logo.png';
+import logo from '../../pics/img/logo.png';
 
 export const Header = () => {
   return (
     <header className='header'>
       <div className='header_container'>
         <div className='header_buttons'>
-          <Link to='/'>
-            <button className='header_btn garage'>Garage</button>
+          <Link className='header_btn garage' to='/'>
+            Garage
           </Link>
-          <Link to='/winners'>
-            <button className='header_btn winners'>Winners</button>
+          <Link className='header_btn winners' to='/winners'>
+            Winners
           </Link>
         </div>
         <div className='header_logo_container'>

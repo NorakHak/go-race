@@ -67,6 +67,7 @@
 .car_name {
   position: absolute;
   left: 280px;
+  z-index: -1000;
 }
 
 .car_name {

@@ -2,8 +2,13 @@ main {
   padding: 50px 5px;
 }
 
+.race_part {
+  position: relative;
+}
+
 .rows_container {
   position: relative;
+  min-height: 120px;
 }
 
 .main_btns_container {
@@ -24,8 +29,7 @@ main {
   gap: 10px;
 }
 
-.race_btns button:first-of-type,
-.create_container button {
+.race_btns button:first-of-type {
   border: 2px solid #61adb3;
   color: #5dced6;
 }
@@ -41,26 +45,18 @@ main {
   gap: 15px;
 }
 
-.create_container,
+
 .update_container {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.create_container input:first-of-type,
+
 .update_container input:first-of-type {
   height: 100%;
 }
 
-.generate_btn {
-  display: flex;
-}
-
-.generate_btn button {
-  border: 2px solid rgb(35, 183, 35);
-  color: rgb(35, 183, 35);
-}
 
 .start {
   position: absolute;

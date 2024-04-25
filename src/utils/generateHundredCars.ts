@@ -1,4 +1,5 @@
-import { Car } from './CarInterface';
+import { Car } from '../interfaces/carInterface';
+import { randomId } from './randomId';
 
 const getRandomColor = (): string => {
   const letters = '0123456789ABCDEF';
@@ -32,9 +33,9 @@ export const generateHundredCars = (lastNumber: number): Car[] => {
     Cars.push({
       name: getRandomName(),
       color: getRandomColor(),
-      id: i,
+      id: randomId(),
+      animationStart: false,
     });
   }
-
   return Cars;
 };

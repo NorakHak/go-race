@@ -5,7 +5,7 @@
 }
 
 body {
-  background: url(../src/imgs/img/vecteezy_brick-pattern-wallpaper-brick-wall-background-blue-brick_20735845.jpg);
+  background: url(../src/pics/img/vecteezy_brick-pattern-wallpaper-brick-wall-background-blue-brick_20735845.jpg);
   min-width: 600px;
 }
 
@@ -13,8 +13,14 @@ button {
   font-family: 'Press Start 2P', system-ui;
   font-weight: 100;
   transition: scale 0.1s;
+  cursor: pointer;
 }
 
 button:active {
   scale: 1.1;
+}
+
+a {
+  text-decoration: none;
+  font-family: 'Press Start 2P', system-ui;
 }

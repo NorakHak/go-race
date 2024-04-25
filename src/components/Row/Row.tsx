@@ -1,69 +1,138 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
 import './Row.css';
-import { Car } from '../../utils/CarInterface';
+import { Car } from '../../interfaces/carInterface';
 // @ts-ignore
-import carLogo from '../../imgs/icons/car.svg';
+import carLogo from '../../pics/icons/car.svg';
 import axios from '../../config/axios';
+import { CarContext } from '../../store/CarsContext';
+import { inRaceCarInterface } from '../../interfaces/inRaceCarInterface';
 
 interface rowProps {
   car: Car;
+  raceStarted: boolean;
+  raceStoped: boolean;
   selectCar: (id: number) => void;
   deleteCar: (id: number) => void;
 }
 
-export const Row: React.FC<rowProps> = ({ selectCar, deleteCar, car }) => {
-  const [position, setPosition] = useState(0);
-  const [velocity, setVelocity] = useState(0);
-  const [distance, setDistance] = useState(0);
+export const Row: React.FC<rowProps> = ({
+  selectCar,
+  deleteCar,
+  car,
+  raceStarted,
+  raceStoped,
+}) => {
+  const [rowWidth, setRowWidth] = useState('');
+  const [animationStart, setAnimationStart] = useState(false);
+  const [xInitial, setXInitial] = useState(0);
+  const [animationTime, setAnimationTime] = useState(0);
 
-  const startCar = async () => {
+  const { setRaceCarsArr } = useContext(CarContext);
+
+  const rowRef = useRef(null);
+
+  useEffect(() => {
+    const rowWidthCalc = () => {
+      if (rowRef.current) {
+        const element = rowRef.current;
+        const computedStyle = window.getComputedStyle(element);
+        const width = computedStyle.getPropertyValue('width');
+
+        setRowWidth(width);
+        setXInitial(+width.slice(0, -2) - 220);
+      }
+    };
+
+    rowWidthCalc();
+
+    const handleResize = () => {
+      rowWidthCalc();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (animationStart) {
+      setXInitial(+rowWidth.slice(0, -2) - 220);
+    }
+  }, [animationStart, rowWidth]);
+
+  const startCarAnimation = async () => {
     const response = await axios.patch(`/engine?status=started&id=${car.id}`);
-    setDistance(response.data.distance);
-    setVelocity(response.data.velocity);
+
+    const time = Math.round((xInitial / response.data.velocity) * 100) / 100;
+
+    console.log(xInitial, time, response.data.velocity, 'velocity db');
+
+    const animationTime = +time.toFixed();
+    setAnimationTime(animationTime);
+
+    const carObj = {
+      carId: car.id,
+      time,
+      color: car.color,
+      carName: car.name,
+    };
+
+    setRaceCarsArr((prev: inRaceCarInterface[]) => {
+      return [...prev, carObj];
+    });
+
+    setTimeout(() => {
+      setAnimationStart(true);
+    }, 4000);
   };
 
   useEffect(() => {
-    if (velocity !== 0 && distance !== 0) {
-      const animationDuration = (distance / velocity) * 1000; // Calculate animation duration in milliseconds
-      const interval = setInterval(() => {
-        setPosition((prevPosition) => prevPosition + 1);
-      }, animationDuration / distance);
-      return () => clearInterval(interval);
+    if (raceStarted) {
+      startCarAnimation();
     }
-  }, [velocity, distance]);
+  }, [raceStarted]);
 
-  const carStyle: any = {
-    position: 'absolute',
-    left: `${position}px`,
-    top: '50%',
-    transform: 'translate(-50%, -50%)', // Center the car vertically
-    width: '50px',
-    height: '30px',
-    backgroundColor: 'red',
+  useEffect(() => {
+    stopCarAnimation();
+  }, [raceStoped]);
+
+  const stopCarAnimation = () => {
+    setAnimationStart(false);
   };
 
   return (
-    <div className='row'>
+    <div className='row' ref={rowRef}>
       <div className='garage_container'>
         <div className='garage_btns'>
           <button onClick={() => selectCar(car.id)} className='select_btn'>
             Select
           </button>
-          <button className='a_btn' onClick={startCar}>
+          <button className='a_btn' onClick={startCarAnimation}>
             A
           </button>
           <button onClick={() => deleteCar(car.id)} className='remove_btn'>
             Remove
           </button>
-          <button className='b_btn'>B</button>
+          <button className='b_btn' onClick={stopCarAnimation}>
+            B
+          </button>
         </div>
         <div className='car_container'>
-          <img
+          <motion.img
             className='car_img'
             src={carLogo}
             alt='car'
-            style={{ borderColor: car.color, ...carStyle }}
+            style={{ borderColor: car.color }}
+            initial={{ x: 0 }}
+            animate={{ x: animationStart ? -xInitial : 0 }}
+            transition={{
+              duration: animationStart ? animationTime : 0,
+              ease: 'linear',
+            }}
           />
         </div>
         <div className='car_name'>{car.name}</div>

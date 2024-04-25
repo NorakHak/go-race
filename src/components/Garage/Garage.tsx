@@ -1,157 +1,200 @@
 import './Garage.css';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import axios from '../../config/axios';
 import { Row } from '../Row/Row';
-import { getCarsData } from '../../utils/getCarsData';
-import { generateHundredCars } from '../../utils/generateHundredCars';
-import { sendDataToServer } from '../../utils/sendDataToServer';
-import { Car } from '../../utils/CarInterface';
+import { getCarsData } from '../../API/getCarsData';
+import { CarContext } from '../../store/CarsContext';
+import { Pagination } from '../Pagination/Pagination';
+import { GeneratingBtn } from '../GeneratingBtn/GeneratingBtn';
+import { CreateCarBlock } from '../CreateCarBlock/CreateCarBlock';
+import { UpdateCarBlock } from '../UpdateCarBlock/UpdateCarBlock';
+import { inRaceCarInterface } from '../../interfaces/inRaceCarInterface';
+import { ModalLoading } from '../../UI/WinnerModal/WinnerModal';
+import { sendWinnerData } from '../../API/sendWinnerData';
+import { getWinnersData } from '../../API/getWinnersData';
 
 export const Garage: React.FC = () => {
-  const resetState = (
-    setState: React.Dispatch<React.SetStateAction<Params>>,
-  ) => {
-    setState({
-      name: '',
-      color: '#000000',
-    });
-  };
+  const { raceCarsArr, setRaceCarsArr } = useContext(CarContext);
+  const { currentPage } = useContext(CarContext);
+  const { carsPerPage, setCarsPerPage } = useContext(CarContext);
+  const { setSelectedCarId } = useContext(CarContext);
+  const [minTime, setMinTime] = useState(0);
+  const { modalActive, setModalActive } = useContext(CarContext);
+  const [raceStarted, setRaceStarted] = useState(false);
+  const [isLoadingCarsVelocity, setIsLoadingCarsVelocity] = useState(false);
+  const [raceStoped, setRaceStoped] = useState(false);
+  const [raceBlock, setRaceBlock] = useState(false);
+  const [winnersIds, setWinnersIds] = useState<number[]>([]);
+  const [displayWinnerName, setDisplayWinnerName] = useState('');
+  const [displayWinnerTime, setDisplayWinnerTime] = useState(0);
 
-  // generating 4 test cars from server
-
-  const [cars, setCars] = useState<Car[]>([]);
+  // generating cars from db, passing to useEffect current page number for pagination tracking
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getCarsData();
-        setCars(data);
+        const resp = await getCarsData(currentPage, 10);
+        const cars = resp.cars;
+
+        setCarsPerPage?.(cars);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching garage data:', error);
       }
+    };
+
+    fetchData();
+  }, [currentPage]);
+
+  // fetching winners ids from server
+
+  useEffect(() => {
+    console.log(winnersIds);
+
+    const fetchData = async () => {
+      console.log(6);
+      try {
+        const winnersData = await getWinnersData();
+        winnersData.forEach((winner) => {
+          setWinnersIds((prev) => [...prev, winner.id]);
+        });
+
+        setWinnersIds((prev) =>
+          prev.filter((item, index) => {
+            return prev.indexOf(item) === index;
+          }),
+        );
+      } catch {}
     };
 
     fetchData();
   }, []);
 
-  // genereting 100 cars
+  // race / reset race and winner calculating
 
-  const carsGenerating = async () => {
-    const hundredCars = generateHundredCars(cars[cars.length - 1].id + 1);
-
-    try {
-      hundredCars.forEach(async (car) => {
-        await sendDataToServer(car).then((res) => {
-          return res;
-        });
-      });
-    } catch (error) {
-      console.log('We got an error, while trying to get data from DB:', error);
+  const gettingMinTime = (arr: inRaceCarInterface[]) => {
+    if (arr.length > 0) {
+      const minTime = arr.reduce(
+        (min, obj) => (obj.time < min ? obj.time : min),
+        arr[0].time,
+      );
+      return minTime;
     }
-    const carsFromDB = await getCarsData();
-
-    setCars(carsFromDB);
+    return 0;
   };
 
-  //creating a car
+  const gettingMaxTime = (arr: inRaceCarInterface[]) => {
+    if (arr.length === 0) {
+      return 0;
+    }
 
-  interface Params {
-    [key: string]: string;
-  }
-
-  const [createParams, setCreateParams] = useState<Params>({
-    name: '',
-    color: '#000000',
-  });
-
-  const handleCreateCarChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    changingParam: string,
-  ) => {
-    const value = e.target.value;
-    setCreateParams((prevParams) => ({
-      ...prevParams,
-      [changingParam]: value,
-    }));
+    return arr.reduce(
+      (max, obj) => (obj.time > max ? obj.time : max),
+      arr[0].time,
+    );
   };
 
-  const createCar = async (
-    e: React.MouseEvent<HTMLButtonElement>,
+  const updatingWinnerStats = async (id: number, time: number) => {
+    try {
+      const { data: winnerFromDB } = await axios.get(`/winners/${id}`);
+
+      const updatedData = {
+        wins: winnerFromDB.wins + 1,
+        time: time,
+      };
+
+      await axios.put(`/winners/${id}`, updatedData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('WinnerInterface is updated');
+    } catch (error) {
+      console.error('Something goes wrong while updating', error);
+    }
+  };
+
+  const creatingWinner = async (
+    id: number,
+    time: number,
     name: string,
     color: string,
-    id: number,
   ) => {
-    e.preventDefault();
-
-    const createdCar: Car = {
+    const winner = {
+      id,
+      wins: 1,
+      time,
       name,
       color,
-      id,
     };
 
-    await sendDataToServer(createdCar);
-
-    const carsFromDB = await getCarsData();
-
-    setCars(carsFromDB);
-
-    resetState(setCreateParams);
+    await sendWinnerData(winner);
   };
 
-  //updating car
-
-  const [updateParams, setUpdateParams] = useState<Params>({
-    name: '',
-    color: '#000000',
-  });
-
-  const updatedCarParams = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    param: string,
-  ) => {
-    setUpdateParams((prevParams) => ({
-      ...prevParams,
-      [param]: e.target.value,
-    }));
+  const calculateWinner = (arr: inRaceCarInterface[], sec: number) => {
+    const winnerObj = arr.find((obj) => (obj.time = sec));
+    if (winnerObj !== undefined) {
+      setDisplayWinnerName(winnerObj.carName);
+      setDisplayWinnerTime(winnerObj.time);
+      if (winnersIds.includes(winnerObj.carId)) {
+        updatingWinnerStats(winnerObj.carId, sec);
+      } else {
+        setWinnersIds((prev) => [...prev, winnerObj.carId]);
+        creatingWinner(
+          winnerObj.carId,
+          sec,
+          winnerObj.carName,
+          winnerObj.color,
+        );
+      }
+    }
   };
 
-  const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
+  useEffect(() => {
+    let timeoutToken: NodeJS.Timeout;
+    setRaceStoped(false);
+    if (raceCarsArr.length === carsPerPage.length && raceCarsArr.length !== 0) {
+      const minTime = gettingMinTime(raceCarsArr);
+      const maxTime = gettingMaxTime(raceCarsArr) + 1;
+
+      setMinTime(minTime);
+
+      calculateWinner(raceCarsArr, minTime);
+      timeoutToken = setTimeout(() => {
+        setRaceStarted(false);
+        setIsLoadingCarsVelocity(false);
+        setModalActive(true);
+        setRaceCarsArr([]);
+      }, minTime * 2000);
+    }
+    return () => {
+      if (timeoutToken) {
+        clearTimeout(timeoutToken);
+      }
+    };
+  }, [raceCarsArr]);
+
+  const startAllCarsAnimation = () => {
+    setIsLoadingCarsVelocity(true);
+    setRaceStarted(true);
+    setRaceBlock(true);
+  };
+
+  const resetAllCarsAnimation = () => {
+    setRaceStoped(true);
+    setRaceBlock(false);
+  };
+
+  //selecting a car
 
   const selectCar = (id: number): void => {
-    const selectedCar = cars.find((car) => {
+    const selectedCar = carsPerPage.find((car) => {
       return car.id === id;
     });
-
     if (selectedCar) {
       setSelectedCarId(selectedCar.id);
     }
-  };
-
-  const updateCar = async (id: number | null) => {
-    try {
-      const updatedCarData = {
-        name: updateParams.name,
-        color: updateParams.color,
-      };
-
-      const response = await axios.put(`/garage/${id}`, updatedCarData);
-      console.log(response);
-      if (!response) {
-        throw new Error('Something goes wrong with car updating');
-      }
-      console.log('Car updated');
-    } catch (error) {
-      console.error('We have an error, Houston:', error);
-    }
-
-    const carsFromDB = await getCarsData();
-
-    setCars(carsFromDB);
-
-    resetState(setUpdateParams);
-    setSelectedCarId(null);
   };
 
   //deleting car
@@ -168,79 +211,65 @@ export const Garage: React.FC = () => {
       console.error('We have an error, Houston:', error);
     }
 
-    const carsFromDB = await getCarsData();
+    const resp = await getCarsData(currentPage, 10);
+    const carsFromDB = resp.cars;
 
-    setCars(carsFromDB);
+    setCarsPerPage?.(carsFromDB);
   };
 
   return (
-    <div className='race_part'>
-      <div className='main_btns_container'>
-        <div className='race_btns'>
-          <button>Race</button>
-          <button>Reset</button>
-        </div>
-        <div className='create_update_btns'>
-          <div className='create_container'>
-            <input
-              value={createParams.name}
-              onChange={(e) => handleCreateCarChange(e, 'name')}
-              type='text'
-            />
-            <input
-              type='color'
-              value={createParams.color}
-              onChange={(e) => handleCreateCarChange(e, 'color')}
-            />
+    <>
+      <div className='race_part'>
+        <div className='main_btns_container'>
+          <div className='race_btns'>
+            <button onClick={startAllCarsAnimation} disabled={raceBlock}>
+              Race
+            </button>
             <button
-              onClick={(e) =>
-                createCar(
-                  e,
-                  createParams.name,
-                  createParams.color,
-                  cars[cars.length - 1].id + 1,
-                )
-              }
+              onClick={resetAllCarsAnimation}
+              disabled={isLoadingCarsVelocity}
             >
-              Create
+              Reset
             </button>
           </div>
-          <div className='update_container'>
-            <input
-              value={updateParams.name}
-              type='text'
-              onChange={(e) => updatedCarParams(e, 'name')}
-            />
-            <input
-              value={updateParams.color}
-              type='color'
-              onChange={(e) => updatedCarParams(e, 'color')}
-            />
-            <button onClick={() => updateCar(selectedCarId)}>Update</button>
+          <div className='create_update_btns'>
+            <CreateCarBlock />
+            <UpdateCarBlock />
           </div>
+          <GeneratingBtn />
         </div>
-        <div className='generate_btn'>
-          <button onClick={carsGenerating}>Generate Cars</button>
+        <div className='rows_container'>
+          <div className='start'>
+            <p className='start_text'>START</p>
+          </div>
+          <div className='finish'>
+            <p className='finish_text'>FINISH</p>
+          </div>
+          {carsPerPage.map((car) => {
+            return (
+              <Row
+                deleteCar={deleteCar}
+                selectCar={selectCar}
+                raceStarted={raceStarted}
+                raceStoped={raceStoped}
+                key={car.id}
+                car={car}
+              />
+            );
+          })}
         </div>
       </div>
-      <div className='rows_container'>
-        <div className='start'>
-          <p className='start_text'>START</p>
-        </div>
-        <div className='finish'>
-          <p className='finish_text'>FINISH</p>
-        </div>
-        {cars.map((car) => {
-          return (
-            <Row
-              deleteCar={deleteCar}
-              selectCar={selectCar}
-              key={car.id}
-              car={car}
-            />
-          );
-        })}
-      </div>
-    </div>
+      {<Pagination />}
+      {modalActive ? (
+        <ModalLoading
+          modalActive={modalActive}
+          setModalActive={setModalActive}
+          displayWinnerName={displayWinnerName}
+          displayWinnerTime={displayWinnerTime}
+        />
+      ) : (
+        ''
+      )}
+    </>
   );
 };
