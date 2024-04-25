@@ -26,13 +26,11 @@ const Winners = () => {
   const sortByWins = async () => {
     const sortedByWins = await getSortedWinners('wins', type);
     setWinners(sortedByWins);
-    console.log(sortedByWins);
   };
 
   const sortByTime = async () => {
     const sortedByTime = await getSortedWinners('time', type);
     setWinners(sortedByTime);
-    console.log(sortedByTime);
   };
 
   const ascOrDesc = () => {
@@ -42,8 +40,6 @@ const Winners = () => {
     } else {
       setType('DESC');
     }
-
-    console.log(type);
   };
 
   return (

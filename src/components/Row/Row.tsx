@@ -69,8 +69,6 @@ export const Row: React.FC<rowProps> = ({
 
     const time = Math.round((xInitial / response.data.velocity) * 100) / 100;
 
-    console.log(xInitial, time, response.data.velocity, 'velocity db');
-
     const animationTime = +time.toFixed();
     setAnimationTime(animationTime);
 

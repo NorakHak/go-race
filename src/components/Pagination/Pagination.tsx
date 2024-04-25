@@ -28,7 +28,6 @@ export const Pagination = ({}) => {
     const data = await getCarsData(1, limit);
     const allCars = data.totalCount;
     const pagesCount = Math.ceil(allCars / limit);
-    console.log(pagesCount);
     return pagesCount;
   };
 

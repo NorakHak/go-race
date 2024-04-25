@@ -33,12 +33,10 @@ export const UpdateCarBlock = () => {
           name: updateParams.name,
           color: updateParams.color,
         };
-        console.log(updatedCarData);
         const response = await axios.put(
           `http://localhost:3000/garage/${id}`,
           updatedCarData,
         );
-        console.log(response);
         if (!response) {
           throw new Error('Something goes wrong with car updating');
         }

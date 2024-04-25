@@ -49,10 +49,7 @@ export const Garage: React.FC = () => {
   // fetching winners ids from server
 
   useEffect(() => {
-    console.log(winnersIds);
-
     const fetchData = async () => {
-      console.log(6);
       try {
         const winnersData = await getWinnersData();
         winnersData.forEach((winner) => {
@@ -66,7 +63,6 @@ export const Garage: React.FC = () => {
         );
       } catch {}
     };
-
     fetchData();
   }, []);
 
