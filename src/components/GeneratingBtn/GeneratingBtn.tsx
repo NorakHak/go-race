@@ -1,19 +1,19 @@
 import { useContext } from 'react';
 
-import { CarContext } from '../../store/CarsContext';
-import { generateHundredCars } from '../../utils/generateHundredCars';
+import { useCarContext } from '../../store/CarsContext';
+import { generateCars } from '../../utils/generateHundredCars';
 import { getCarsData } from '../../API/getCarsData';
 import { sendCarData } from '../../API/sendCarData';
 import './GeneratingBtn.css';
 
 export const GeneratingBtn = () => {
-  const { cars, setCars } = useContext(CarContext);
-  const { currentPage } = useContext(CarContext);
-  const { setCarsPerPage } = useContext(CarContext);
+  const { cars, setCars } = useCarContext();
+  const { currentPage } = useCarContext();
+  const { setCarsPerPage } = useCarContext();
   const carsGenerating = async () => {
     const lastId = cars.length > 0 ? cars[cars.length - 1].id + 1 : 1;
 
-    const hundredCars = generateHundredCars(lastId);
+    const hundredCars = generateCars(lastId);
 
     try {
       hundredCars.forEach(async (car) => {

@@ -1,71 +1,70 @@
 .winners_container {
-    font-family: 'Press Start 2P', system-ui;
-    font-weight: 400;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
 }
 
 .winners_header {
-    font-size: 50px;
-    color:#b361a0;
-    padding-left: 20px;
-    margin-bottom: 20px;
+  font-size: 50px;
+  color: #b361a0;
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
 
 .winners_top_part {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 2px solid rgb(235, 133, 226);
-    color: #5dced6;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid rgb(235, 133, 226);
+  color: #5dced6;
 }
 
-.winners_time{
-    word-spacing: -12px;
+.winners_time {
+  word-spacing: -12px;
 }
 
 .box {
-    width: 140px;
-    height: 100%;
-    text-align: center;
+  width: 140px;
+  height: 100%;
+  text-align: center;
 }
 
 .sort_btns {
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sort_heading {
-    font-size: 22px;
-    color: #5dced6;
+  font-size: 22px;
+  color: #5dced6;
 }
 
 .sort_btns_container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .checkbox_text {
-    font-size: 12px;
-    color: #b361a0;
+  font-size: 12px;
+  color: #b361a0;
 }
 
-.sort_time, .sort_wins {
-    padding: 5px;
-    background: inherit;
-    border-radius: 5px;
+.sort_time,
+.sort_wins {
+  padding: 5px;
+  background: inherit;
+  border-radius: 5px;
 }
 
 .sort_time {
-    border: 2px solid #b361a0;
-    color: #b361a0;
+  border: 2px solid #b361a0;
+  color: #b361a0;
 }
 
 .sort_wins {
-    border: 2px solid #5dced6;
-    color: #5dced6;
+  border: 2px solid #5dced6;
+  color: #5dced6;
 }
-
-

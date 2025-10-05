@@ -1,62 +1,62 @@
 .winner_modal {
-    position: fixed;
-    height: 100%;
-    width: 100vw;
-    background-color: rgba(0,0,0,0.2);
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 600px;
+  position: fixed;
+  height: 100%;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 600px;
 }
 
 .winner_modal_content {
-    padding: 20px;
-    background: rgb(16, 16, 16);
-    border-radius: 12px;
-    height: 200px;
-    width: 500px;
-    border: 1px solid #b361a0;
-    box-shadow: 3px 6px 27px 10px #b361a0;
-    -webkit-box-shadow: 3px 6px 27px 10px #b361a0;
-    -moz-box-shadow: 3px 6px 27px 10px #b361a0;
+  padding: 20px;
+  background: rgb(16, 16, 16);
+  border-radius: 12px;
+  height: 200px;
+  width: 500px;
+  border: 1px solid #b361a0;
+  box-shadow: 3px 6px 27px 10px #b361a0;
+  -webkit-box-shadow: 3px 6px 27px 10px #b361a0;
+  -moz-box-shadow: 3px 6px 27px 10px #b361a0;
 }
 
-.winner_modal_btn_container{
-    display: flex;
-    justify-content: end;
+.winner_modal_btn_container {
+  display: flex;
+  justify-content: end;
 }
 
 .winner_modal_btn {
-    font-size: 17px;
-    border: none;
-    background: inherit;
-    color: #b361a0;
+  font-size: 17px;
+  border: none;
+  background: inherit;
+  color: #b361a0;
 }
 
 .winner_modal_desc {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    color: white;
-    font-size: 17px;
-    font-family: 'Press Start 2P', system-ui;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: white;
+  font-size: 17px;
+  font-family: 'Press Start 2P', system-ui;
 }
 
 .winner_modal_header {
-    font-size: 30px;
-    color: #b361a0;
+  font-size: 30px;
+  color: #b361a0;
 }
 
 .winner_modal_time {
-    color: #b361a0;
-    font-size: 20px;
+  color: #b361a0;
+  font-size: 20px;
 }
 
 .winner_modal_car {
-    color: #5dced6;
-    font-size: 25px;
+  color: #5dced6;
+  font-size: 25px;
 }

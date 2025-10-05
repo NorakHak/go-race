@@ -4,11 +4,29 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: #0d2549;
+}
 body {
+  min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #root {
+    height: 100%;
+    width: 100%;
   background: url(../src/pics/img/vecteezy_brick-pattern-wallpaper-brick-wall-background-blue-brick_20735845.jpg);
   min-width: 600px;
 }
 
+.App {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 button {
   font-family: 'Press Start 2P', system-ui;
   font-weight: 100;

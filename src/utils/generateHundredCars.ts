@@ -2,15 +2,19 @@ import { Car } from '../interfaces/carInterface';
 import { randomId } from './randomId';
 
 const getRandomColor = (): string => {
+
   const letters = '0123456789ABCDEF';
   let color = '#';
+
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
+
   return color;
 };
 
 const getRandomName = (): string => {
+
   const brandsAndModels: [string, string[]][] = [
     ['Ford', ['Escort', 'GT40', 'Model T', 'GT']],
     ['BMW', ['Series 2', 'Series 5', 'X5', 'Series 8M']],
@@ -26,10 +30,15 @@ const getRandomName = (): string => {
   return `${brand} ${model}`;
 };
 
-export const generateHundredCars = (lastNumber: number): Car[] => {
+export const generateCars = (count: number): Car[] => {
+
+  if (!count) {
+    count = 0
+  }
+
   const Cars: Car[] = [];
 
-  for (let i = lastNumber; i <= lastNumber + 100; i++) {
+  for (let i = 0; i <= count; i++) {
     Cars.push({
       name: getRandomName(),
       color: getRandomColor(),

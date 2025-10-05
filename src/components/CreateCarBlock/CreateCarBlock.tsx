@@ -5,13 +5,13 @@ import { getCarsData } from '../../API/getCarsData';
 import { sendCarData } from '../../API/sendCarData';
 import { carParams } from '../../interfaces/paramsInterface';
 import { resetState } from '../../utils/inputsReset';
-import { CarContext } from '../../store/CarsContext';
+import { useCarContext } from '../../store/CarsContext';
 import { randomId } from '../../utils/randomId';
 import './CreateCarBlock.css';
 
 export const CreateCarBlock = () => {
-  const { currentPage } = useContext(CarContext);
-  const { setCarsPerPage } = useContext(CarContext);
+  const { currentPage } = useCarContext();
+  const { setCarsPerPage } = useCarContext();
 
   const [createParams, setCreateParams] = useState<carParams>({
     name: '',

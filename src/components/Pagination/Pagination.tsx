@@ -4,10 +4,10 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import './Pagination.css';
 import { getCarsData } from '../../API/getCarsData';
-import { CarContext } from '../../store/CarsContext';
+import { useCarContext } from '../../store/CarsContext';
 
 export const Pagination = ({}) => {
-  const { currentPage, setCurrentPage } = useContext(CarContext);
+  const { currentPage, setCurrentPage } = useCarContext();
 
   const nextPage = async () => {
     const max = await countPagesNumber();

@@ -1,9 +1,6 @@
-main {
-  padding: 50px 5px;
-}
-
 .race_part {
   position: relative;
+  flex: 1;
 }
 
 .rows_container {
@@ -45,18 +42,15 @@ main {
   gap: 15px;
 }
 
-
 .update_container {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-
 .update_container input:first-of-type {
   height: 100%;
 }
-
 
 .start {
   position: absolute;

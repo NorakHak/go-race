@@ -1,10 +1,9 @@
 import './Garage.css';
-import { useContext, useEffect, useState } from 'react';
 
 import axios from '../../config/axios';
 import { Row } from '../Row/Row';
 import { getCarsData } from '../../API/getCarsData';
-import { CarContext } from '../../store/CarsContext';
+import { useCarContext } from '../../store/CarsContext';
 import { Pagination } from '../Pagination/Pagination';
 import { GeneratingBtn } from '../GeneratingBtn/GeneratingBtn';
 import { CreateCarBlock } from '../CreateCarBlock/CreateCarBlock';
@@ -13,14 +12,18 @@ import { inRaceCarInterface } from '../../interfaces/inRaceCarInterface';
 import { ModalLoading } from '../../UI/WinnerModal/WinnerModal';
 import { sendWinnerData } from '../../API/sendWinnerData';
 import { getWinnersData } from '../../API/getWinnersData';
+import { useEffect, useState } from 'react';
 
 export const Garage: React.FC = () => {
-  const { raceCarsArr, setRaceCarsArr } = useContext(CarContext);
-  const { currentPage } = useContext(CarContext);
-  const { carsPerPage, setCarsPerPage } = useContext(CarContext);
-  const { setSelectedCarId } = useContext(CarContext);
+
+  const context = useCarContext()
+
+  const { raceCarsArr, setRaceCarsArr } = useCarContext()
+  const { currentPage } = useCarContext()
+  const { carsPerPage, setCarsPerPage } = useCarContext()
+  const { setSelectedCarId } = useCarContext()
   const [minTime, setMinTime] = useState(0);
-  const { modalActive, setModalActive } = useContext(CarContext);
+  const { modalActive, setModalActive } = useCarContext()
   const [raceStarted, setRaceStarted] = useState(false);
   const [isLoadingCarsVelocity, setIsLoadingCarsVelocity] = useState(false);
   const [raceStoped, setRaceStoped] = useState(false);
@@ -28,23 +31,6 @@ export const Garage: React.FC = () => {
   const [winnersIds, setWinnersIds] = useState<number[]>([]);
   const [displayWinnerName, setDisplayWinnerName] = useState('');
   const [displayWinnerTime, setDisplayWinnerTime] = useState(0);
-
-  // generating cars from db, passing to useEffect current page number for pagination tracking
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await getCarsData(currentPage, 10);
-        const cars = resp.cars;
-
-        setCarsPerPage?.(cars);
-      } catch (error) {
-        console.error('Error fetching garage data:', error);
-      }
-    };
-
-    fetchData();
-  }, [currentPage]);
 
   // fetching winners ids from server
 
@@ -241,7 +227,7 @@ export const Garage: React.FC = () => {
           <div className='finish'>
             <p className='finish_text'>FINISH</p>
           </div>
-          {carsPerPage.map((car) => {
+          {context.cars.map((car) => {
             return (
               <Row
                 deleteCar={deleteCar}

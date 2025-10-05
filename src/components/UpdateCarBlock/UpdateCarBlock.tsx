@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { useContext, useState } from 'react';
 
-import { CarContext } from '../../store/CarsContext';
+import { useCarContext } from '../../store/CarsContext';
 import { getCarsData } from '../../API/getCarsData';
 import { resetState } from '../../utils/inputsReset';
 import { carParams } from '../../interfaces/paramsInterface';
 
 export const UpdateCarBlock = () => {
-  const { setCarsPerPage } = useContext(CarContext);
-  const { currentPage } = useContext(CarContext);
-  const { selectedCarId, setSelectedCarId } = useContext(CarContext);
+  const { setCarsPerPage } = useCarContext();
+  const { currentPage } = useCarContext();
+  const { selectedCarId, setSelectedCarId } = useCarContext();
 
   const [updateParams, setUpdateParams] = useState<carParams>({
     name: '',

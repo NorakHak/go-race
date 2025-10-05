@@ -6,7 +6,7 @@ import { Car } from '../../interfaces/carInterface';
 // @ts-ignore
 import carLogo from '../../pics/icons/car.svg';
 import axios from '../../config/axios';
-import { CarContext } from '../../store/CarsContext';
+import { useCarContext } from '../../store/CarsContext';
 import { inRaceCarInterface } from '../../interfaces/inRaceCarInterface';
 
 interface rowProps {
@@ -24,12 +24,13 @@ export const Row: React.FC<rowProps> = ({
   raceStarted,
   raceStoped,
 }) => {
+  
   const [rowWidth, setRowWidth] = useState('');
   const [animationStart, setAnimationStart] = useState(false);
   const [xInitial, setXInitial] = useState(0);
   const [animationTime, setAnimationTime] = useState(0);
 
-  const { setRaceCarsArr } = useContext(CarContext);
+  const { setRaceCarsArr } = useCarContext();
 
   const rowRef = useRef(null);
 

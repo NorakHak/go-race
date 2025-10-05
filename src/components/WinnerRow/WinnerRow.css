@@ -1,16 +1,15 @@
 .winners_row {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: rgb(3, 219, 219);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(3, 219, 219);
 }
 
 .winner_car {
-    width: 90px;
-    height: 70px;
-    rotate: 180deg;
-    border: 2px solid;
-    border-radius: 5px;
+  width: 90px;
+  height: 70px;
+  rotate: 180deg;
+  border: 2px solid;
+  border-radius: 5px;
 }
-
