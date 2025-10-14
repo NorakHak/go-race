@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 
-import { Car } from '../../interfaces/carInterface';
+
 import { getCarsData } from '../../API/getCarsData';
 import { sendCarData } from '../../API/sendCarData';
 import { carParams } from '../../interfaces/paramsInterface';
@@ -8,6 +8,7 @@ import { resetState } from '../../utils/inputsReset';
 import { useCarContext } from '../../store/CarsContext';
 import { randomId } from '../../utils/randomId';
 import './CreateCarBlock.css';
+import { CarI } from '../../interfaces/carI';
 
 export const CreateCarBlock = () => {
   const { currentPage } = useCarContext();
@@ -41,14 +42,14 @@ export const CreateCarBlock = () => {
   ) => {
     e.preventDefault();
 
-    const createdCar: Car = {
-      name,
-      color,
-      id,
-      animationStart: false,
-    };
+    // const createdCar: CarI = {
+    //   name,
+    //   color,
+    //   id,
+    //   animationStart: false,
+    // };
 
-    await sendCarData(createdCar);
+    // await sendCarData(createdCar);
 
     const resp = await getCarsData(currentPage, 10);
     const carsFromDB = resp.cars;
@@ -82,6 +83,4 @@ export const CreateCarBlock = () => {
     </div>
   );
 };
-function setCarsPerPage(carsFromDB: Car[]) {
-  throw new Error('Function not implemented.');
-}
+

@@ -8,7 +8,6 @@ import React, {
   useEffect,
 } from 'react';
 
-import { Car } from '../interfaces/carInterface';
 import { inRaceCarInterface } from '../interfaces/inRaceCarInterface';
 import { CarI } from '../interfaces/carI';
 import { generateCars } from '../utils/generateHundredCars';
@@ -16,10 +15,10 @@ interface CarContextValue {
 
   carsData: CarI[];
 
-  cars: Car[];
-  setCars: (cars: Car[]) => void;
-  carsPerPage: Car[];
-  setCarsPerPage: (cars: Car[]) => void;
+  cars: CarI[];
+  setCars: (cars: CarI[]) => void;
+  carsPerPage: CarI[];
+  setCarsPerPage: (cars: CarI[]) => void;
   cancelAnimations: boolean;
   setCancelAnimations: (value: boolean) => void;
   currentPage: number;
@@ -50,8 +49,8 @@ const CarProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const [carsData, setCarsData] = useState<CarI[]>([])
 
-  const [cars, setCars] = useState<Car[]>([]);
-  const [carsPerPage, setCarsPerPage] = useState<Car[]>([]);
+  const [cars, setCars] = useState<CarI[]>([]);
+  const [carsPerPage, setCarsPerPage] = useState<CarI[]>([]);
   const [cancelAnimations, setCancelAnimations] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
@@ -62,7 +61,7 @@ const CarProvider: React.FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
 
     function fetchCars() {
-      const cars = generateCars(50);
+      const cars = generateCars(10);
 
       setCars(cars)
     }

@@ -1,12 +1,8 @@
-.logo,
-.arrow_img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .header {
-  padding: 50px 100px;
+  padding-block: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .header_container {
@@ -41,28 +37,39 @@
   color: #5dced6;
 }
 
+.winners {
+  border: 3px solid #b361a0;
+  color: #b361a0;
+}
+
+.header_logo_container {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: max-content;
+}
+
+.arrow_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .garage:hover {
   -webkit-box-shadow: 0px 0px 52px 2px rgba(93, 206, 214, 1);
   -moz-box-shadow: 0px 0px 52px 2px rgba(93, 206, 214, 1);
   box-shadow: 0px 0px 52px 2px rgba(93, 206, 214, 1);
 }
 
-.winners {
-  border: 3px solid #b361a0;
-  color: #b361a0;
-}
-
 .winners:hover {
   -webkit-box-shadow: 0px 0px 52px 2px rgba(179, 97, 160, 1);
   -moz-box-shadow: 0px 0px 52px 2px rgba(179, 97, 160, 1);
   box-shadow: 0px 0px 52px 2px rgba(179, 97, 160, 1);
-}
-
-.header_logo_container {
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
 }
 
 @media only screen and (max-width: 1000px) {

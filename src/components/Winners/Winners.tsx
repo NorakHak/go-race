@@ -15,8 +15,8 @@ const Winners = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const winnersData = await getWinnersData();
-      setWinners(winnersData);
+      // const winnersData = await getWinnersData();
+      // setWinners(winnersData);
     };
     fetchData();
   }, []);

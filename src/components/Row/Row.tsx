@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import './Row.css';
-import { Car } from '../../interfaces/carInterface';
+import { CarI } from '../../interfaces/carI';
 // @ts-ignore
 import carLogo from '../../pics/icons/car.svg';
 import axios from '../../config/axios';
@@ -10,21 +10,17 @@ import { useCarContext } from '../../store/CarsContext';
 import { inRaceCarInterface } from '../../interfaces/inRaceCarInterface';
 
 interface rowProps {
-  car: Car;
+  car: CarI;
   raceStarted: boolean;
   raceStoped: boolean;
-  selectCar: (id: number) => void;
-  deleteCar: (id: number) => void;
 }
 
 export const Row: React.FC<rowProps> = ({
-  selectCar,
-  deleteCar,
   car,
   raceStarted,
   raceStoped,
 }) => {
-  
+
   const [rowWidth, setRowWidth] = useState('');
   const [animationStart, setAnimationStart] = useState(false);
   const [xInitial, setXInitial] = useState(0);
@@ -35,15 +31,20 @@ export const Row: React.FC<rowProps> = ({
   const rowRef = useRef(null);
 
   useEffect(() => {
+
     const rowWidthCalc = () => {
+
       if (rowRef.current) {
+
         const element = rowRef.current;
         const computedStyle = window.getComputedStyle(element);
         const width = computedStyle.getPropertyValue('width');
 
         setRowWidth(width);
         setXInitial(+width.slice(0, -2) - 220);
+
       }
+
     };
 
     rowWidthCalc();
@@ -66,11 +67,12 @@ export const Row: React.FC<rowProps> = ({
   }, [animationStart, rowWidth]);
 
   const startCarAnimation = async () => {
-    const response = await axios.patch(`/engine?status=started&id=${car.id}`);
 
-    const time = Math.round((xInitial / response.data.velocity) * 100) / 100;
+    const randomVelocity = Math.floor(Math.random() * 150) + 50;
+    const time = Math.round((xInitial / randomVelocity) * 100) / 100;
 
     const animationTime = +time.toFixed();
+
     setAnimationTime(animationTime);
 
     const carObj = {
@@ -79,10 +81,6 @@ export const Row: React.FC<rowProps> = ({
       color: car.color,
       carName: car.name,
     };
-
-    setRaceCarsArr((prev: inRaceCarInterface[]) => {
-      return [...prev, carObj];
-    });
 
     setTimeout(() => {
       setAnimationStart(true);
@@ -107,13 +105,13 @@ export const Row: React.FC<rowProps> = ({
     <div className='row' ref={rowRef}>
       <div className='garage_container'>
         <div className='garage_btns'>
-          <button onClick={() => selectCar(car.id)} className='select_btn'>
+          <button className='select_btn'>
             Select
           </button>
           <button className='a_btn' onClick={startCarAnimation}>
             A
           </button>
-          <button onClick={() => deleteCar(car.id)} className='remove_btn'>
+          <button className='remove_btn'>
             Remove
           </button>
           <button className='b_btn' onClick={stopCarAnimation}>

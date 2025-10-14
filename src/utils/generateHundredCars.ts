@@ -1,4 +1,4 @@
-import { Car } from '../interfaces/carInterface';
+import { CarI } from '../interfaces/carI';
 import { randomId } from './randomId';
 
 const getRandomColor = (): string => {
@@ -30,20 +30,19 @@ const getRandomName = (): string => {
   return `${brand} ${model}`;
 };
 
-export const generateCars = (count: number): Car[] => {
+export const generateCars = (count: number): CarI[] => {
 
   if (!count) {
     count = 0
   }
 
-  const Cars: Car[] = [];
+  const Cars: CarI[] = [];
 
   for (let i = 0; i <= count; i++) {
     Cars.push({
       name: getRandomName(),
       color: getRandomColor(),
-      id: randomId(),
-      animationStart: false,
+      id: randomId().toString(),
     });
   }
   return Cars;

@@ -1,7 +1,8 @@
 import axios from '../config/axios';
-import { Car } from '../interfaces/carInterface';
+import { CarI } from '../interfaces/carI';
 
-export const sendCarData = async (data: Car): Promise<void> => {
+
+export const sendCarData = async (data: CarI): Promise<void> => {
   try {
     const response = await axios.post('/garage', data);
     if (!response) {

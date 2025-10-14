@@ -1,10 +1,10 @@
 import axios from '../config/axios';
-import { Car } from '../interfaces/carInterface';
+import { CarI } from '../interfaces/carI';
 
 export const getCarsData = async (
   page: number,
   limit: number,
-): Promise<{ cars: Car[]; totalCount: number }> => {
+): Promise<{ cars: CarI[]; totalCount: number }> => {
   const response = await axios.get(`/garage?_page=${page}&_limit=${limit}`);
 
   if (!response) {

@@ -47,7 +47,7 @@ export const Garage: React.FC = () => {
             return prev.indexOf(item) === index;
           }),
         );
-      } catch {}
+      } catch { }
     };
     fetchData();
   }, []);
@@ -168,58 +168,36 @@ export const Garage: React.FC = () => {
     setRaceBlock(false);
   };
 
-  //selecting a car
+  const buttonsRenderer = () => {
 
-  const selectCar = (id: number): void => {
-    const selectedCar = carsPerPage.find((car) => {
-      return car.id === id;
-    });
-    if (selectedCar) {
-      setSelectedCarId(selectedCar.id);
-    }
-  };
+    return <div className='main_btns_container'>
+      <div className='race_btns'>
+        <button
+          onClick={startAllCarsAnimation}
+          disabled={raceBlock}>
+          Race
+        </button>
+        <button
+          onClick={resetAllCarsAnimation}
+          disabled={isLoadingCarsVelocity}>
+          Reset
+        </button>
+      </div>
+      <div className='create_update_btns'>
+        <CreateCarBlock />
+        <UpdateCarBlock />
+      </div>
+      <GeneratingBtn />
+    </div>
 
-  //deleting car
-
-  const deleteCar = async (id: number) => {
-    try {
-      const response = await axios.delete(`/garage/${id}`);
-
-      if (!response) {
-        throw new Error('Something goes wrong with car deleting');
-      }
-      console.log('Car deleted');
-    } catch (error) {
-      console.error('We have an error, Houston:', error);
-    }
-
-    const resp = await getCarsData(currentPage, 10);
-    const carsFromDB = resp.cars;
-
-    setCarsPerPage?.(carsFromDB);
-  };
+  }
 
   return (
     <>
       <div className='race_part'>
-        <div className='main_btns_container'>
-          <div className='race_btns'>
-            <button onClick={startAllCarsAnimation} disabled={raceBlock}>
-              Race
-            </button>
-            <button
-              onClick={resetAllCarsAnimation}
-              disabled={isLoadingCarsVelocity}
-            >
-              Reset
-            </button>
-          </div>
-          <div className='create_update_btns'>
-            <CreateCarBlock />
-            <UpdateCarBlock />
-          </div>
-          <GeneratingBtn />
-        </div>
+
+        {buttonsRenderer()}
+
         <div className='rows_container'>
           <div className='start'>
             <p className='start_text'>START</p>
@@ -230,8 +208,6 @@ export const Garage: React.FC = () => {
           {context.cars.map((car) => {
             return (
               <Row
-                deleteCar={deleteCar}
-                selectCar={selectCar}
                 raceStarted={raceStarted}
                 raceStoped={raceStoped}
                 key={car.id}
